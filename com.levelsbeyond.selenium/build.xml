@@ -1,0 +1,93 @@
+<project name="LevelsBeyond Ant Build" default="all_selenium_tests" basedir=".">
+	<property name="src" location="test" />
+	<property name="build" location="build" />
+	<property name="libs" location="lib" />
+	<property name="testresults" location="JUnit-results" />
+	<property name="testreport" location="JUnit-report" />
+	<property name="seleniumVersion" value="2.41.0" />
+	<property name="seleniumLibsFolder" value="selenium_${seleniumVersion}" />
+	<property name="seleniumBrowserDriversFolder" value="browserDrivers" />
+	<property name="junitJar" value="junit-4.10.jar" />
+	<property name="parallelJunitJar" value="parallel-junit-1.1.jar" />
+	<property name="seleniumServerJarName" value="selenium-server-standalone-${seleniumVersion}.jar" />
+	<property name="seleniumDriverJarName" value="selenium-java-${seleniumVersion}.jar" />
+	<property name="postgresDriverJarName" value="postgresql-9.3-1101.jdbc3.jar" />
+	<property name="seleniumserverlocation" value="${libs}/${seleniumLibsFolder}/${seleniumServerJarName}" />
+	<property name="seleniumdriverlocation" value="${libs}/${seleniumLibsFolder}/${seleniumDriverJarName}" />
+	<property name="browserdriverslocation" value="${libs}/${seleniumBrowserDriversFolder}" />
+	<property name="postgresdriverlocation" value="${libs}/${postgresDriverJarName}" />
+	<property name="seleniumserver" location="${seleniumserverlocation}" />
+	<property name="browserdrivers" location="${browserdriverslocation}" />
+	<property name="userExtensions" location="${libs}/user-extensions.js" />
+
+	<path id="junit.class.path">
+		<pathelement location="${libs}/${junitJar}" />
+		<pathelement location="${seleniumserver}" />
+		<pathelement location="${build}" />
+		<pathelement location="${browserdrivers}" />
+		<pathelement location="${postgresdriverlocation}" />
+
+	</path>
+
+	<target name="clean">
+		<delete dir="${build}" />
+		<delete dir="${testresults}" />
+		<delete dir="${testreport}" />
+	</target>
+
+	<target name="makedir">
+		<mkdir dir="${build}" />
+		<mkdir dir="${testresults}" />
+		<mkdir dir="${testreport}" />
+	</target>
+
+	<target name="compile" depends="clean, makedir">
+		<javac srcdir="${src}" destdir="${build}" debug="true" includeAntRuntime="false">
+			<classpath refid="junit.class.path" />
+		</javac>
+	</target>
+	
+	<target name="run_login_test" depends="clean, compile" description="Login test">
+			<junit printsummary="yes" fork="yes" errorproperty="JUnit.error" failureproperty="JUnit.error">
+				<classpath refid="junit.class.path" />
+				<formatter type="xml" />
+				<test todir="${testresults}" name="com.levelsbeyond.selenium.LoginAndLogout" />
+			</junit>
+			<antcall target="report-JUnit" />
+			<fail if="JUnit.error" message="Selenium test(s) failed. See reports!" />
+	</target>
+	
+	<target name="run_javascript_reg_suite" depends="clean, compile" description="Target for running JavaScript regression suite from Jenkins">
+		<junit printsummary="yes" fork="yes" errorproperty="JUnit.error" failureproperty="JUnit.error">
+			<classpath refid="junit.class.path" />
+			<formatter type="xml" />
+			<test todir="${testresults}" name="com.levelsbeyond.selenium.SeleniumJavaScriptRegressionTestSuite" />
+		</junit>
+		<antcall target="report-JUnit" />
+		<fail if="JUnit.error" message="Selenium test(s) failed. See reports!" />
+	</target>
+	
+	<target name="run_javascript_auxillary_suite" depends="clean, compile" description="Target for running JavaScript regression suite from Jenkins">
+		<junit printsummary="yes" fork="yes" errorproperty="JUnit.error" failureproperty="JUnit.error">
+			<classpath refid="junit.class.path" />
+			<formatter type="xml" />
+			<test todir="${testresults}" name="com.levelsbeyond.selenium.SeleniumJavaScriptAuxillaryTestSuite" />
+		</junit>
+		<antcall target="report-JUnit" />
+		<fail if="JUnit.error" message="Selenium test(s) failed. See reports!" />
+	</target>	
+
+	<target name="all_selenium_tests" depends="clean, compile" description="The Main Target for running all tests">
+		<antcall target="run_javascript_reg_suite" />
+	</target>
+
+	<target name="report-JUnit">
+		<junitreport todir="${testreport}">
+			<fileset dir="${testresults}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${testreport}" />
+		</junitreport>
+	</target>
+	
+</project>
