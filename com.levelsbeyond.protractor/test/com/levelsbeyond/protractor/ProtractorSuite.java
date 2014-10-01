@@ -1,23 +1,32 @@
+/**
+Levels Beyond CONFIDENTIAL
+ 
+Copyright 2003 - 2014 Levels Beyond Incorporated
+All Rights Reserved.
+ 
+NOTICE:  All information contained herein is, and remains
+the property of Levels Beyond Incorporated and its suppliers,
+if any.  The intellectual and technical concepts contained
+herein are proprietary to Levels Beyond Incorporated
+and its suppliers and may be covered by U.S. and Foreign Patents,
+patents in process, and are protected by trade secret or copyright law.
+Dissemination of this information or reproduction of this material
+is unlawful and strictly forbidden unless prior written permission is obtained
+from Levels Beyond Incorporated.
+ **/
+
 package com.levelsbeyond.protractor;
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-
-import java.util.concurrent.TimeUnit;
-import java.util.Date;
-import java.io.File;
-
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.*;
-
-import static org.openqa.selenium.OutputType.*;
 
 public class ProtractorSuite extends ProtractorUtilities{
     FirefoxDriver wd;

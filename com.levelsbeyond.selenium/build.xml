@@ -61,7 +61,7 @@
 		<junit printsummary="yes" fork="yes" errorproperty="JUnit.error" failureproperty="JUnit.error">
 			<classpath refid="junit.class.path" />
 			<formatter type="xml" />
-			<test todir="${testresults}" name="com.levelsbeyond.selenium.SeleniumJavaScriptRegressionTestSuite" />
+			<test todir="${testresults}" name="com.levelsbeyond.protractor.ProtractorRegressionSuite" />
 		</junit>
 		<antcall target="report-JUnit" />
 		<fail if="JUnit.error" message="Selenium test(s) failed. See reports!" />
