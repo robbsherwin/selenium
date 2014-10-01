@@ -4,7 +4,7 @@
 	<property name="libs" location="lib" />
 	<property name="testresults" location="JUnit-results" />
 	<property name="testreport" location="JUnit-report" />
-	<property name="seleniumVersion" value="2.41.0" />
+	<property name="seleniumVersion" value="2.42.2" />
 	<property name="seleniumLibsFolder" value="selenium_${seleniumVersion}" />
 	<property name="seleniumBrowserDriversFolder" value="browserDrivers" />
 	<property name="junitJar" value="junit-4.10.jar" />
